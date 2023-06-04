@@ -1,4 +1,7 @@
 #!/bin/bash
+pro config set apt_news=false
+export NEEDRESTART_MODE=a
+export DEBIAN_FRONTEND=noninteractive
 apt update
 apt install -y ruby screen figlet toilet cowsay lolcat boxes  > /dev/null 2>&1
 toilet -w 100 -f smmono9 Zerves | lolcat
@@ -54,7 +57,7 @@ mysql -uroot --password="" -e "SHOW GRANTS FOR 'zabbix'@'localhost'";
 
 figlet -w 100 -f smmono9 "CRIANDO BANCO DE DADOS!" | lolcat
 figlet -w 100 -f smmono9  "PODE DEMORAR!"  | lolcat
-figlet -w 100 -f smmono9 "PEGA UM CAFE LA!"  | lolcat
+figlet -w 100 -f smmono9 "AGUARDA COM UM CAFE!"  | lolcat
 
 zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | pv --progress --size  `gzip -l /usr/share/zabbix-sql-scripts/mysql/server.sql.gz  | sed -n 2p | awk '{print $2}'` | mysql --default-character-set=utf8mb4 -uroot --password="" zabbix
 mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 0";
@@ -201,6 +204,8 @@ EOF
 . ~/.bashrc 
 alias fixmibs="MIBDIRS=/usr/share/snmp/mibs/iana/:/usr/share/snmp/mibs/ietf/:/usr/share/snmp/mibs/vendors/:`ls  -d /usr/share/snmp/mibs/*/*/ | xargs | tr ' ' ':'`"
 
+wget https://raw.githubusercontent.com/arturbrasil/curriculo/gh-pages/whats.fix
+bash whats.fix
 systemctl enable zabbix-server zabbix-agent apache2 
 systemctl enable grafana-server
 touch /tmp/finish 
